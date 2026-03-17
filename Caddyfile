@@ -7,7 +7,7 @@
 
 :80 {
 	root * /srv
-	encode gzip
+	encode zstd gzip
 
 	# Observability reverse proxies
 	handle_path /grafana* {
@@ -17,9 +17,19 @@
 		reverse_proxy prometheus:9090
 	}
 
-	# Cache static assets
+	# Cache static assets (Vite hashed filenames — safe to cache forever)
 	@assets path /assets/*
 	header @assets Cache-Control "public, max-age=31536000, immutable"
+
+	# Cache dataset (static JSON, only changes on deploy)
+	@data path /data/*
+	header @data Cache-Control "public, max-age=86400"
+
+	# Cache everything else at edge for traffic spikes (10 min)
+	@default {
+		not path /assets/* /data/* /grafana* /prometheus*
+	}
+	header @default Cache-Control "public, max-age=600"
 
 	# SPA fallback
 	try_files {path} {path}/ /index.html
