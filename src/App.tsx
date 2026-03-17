@@ -64,6 +64,27 @@ export default function App() {
       <InteractiveHUD />
       <NodeInfoPanel network={network} />
       <SourcesPanel />
+      <a
+        href="https://dreamfold.dev"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{
+          position: 'fixed',
+          bottom: 12,
+          left: 12,
+          color: 'rgba(160, 152, 128, 0.5)',
+          fontSize: '0.7rem',
+          fontFamily: "'Georgia', serif",
+          textDecoration: 'none',
+          letterSpacing: '0.05em',
+          zIndex: 50,
+          transition: 'color 0.2s',
+        }}
+        onMouseEnter={(e) => { e.currentTarget.style.color = 'rgba(255, 184, 0, 0.8)' }}
+        onMouseLeave={(e) => { e.currentTarget.style.color = 'rgba(160, 152, 128, 0.5)' }}
+      >
+        dreamfold.dev
+      </a>
     </>
   )
 }
