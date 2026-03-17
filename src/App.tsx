@@ -4,6 +4,7 @@ import { useScrollProgress } from './hooks/useScrollProgress'
 import { useAppStore } from './stores/appStore'
 import { Scene } from './components/canvas/Scene'
 import { ScrollNarrative } from './components/overlay/ScrollNarrative'
+import { SourcesPanel } from './components/overlay/SourcesPanel'
 import { InteractiveHUD } from './components/ui/InteractiveHUD'
 import { NodeInfoPanel } from './components/ui/NodeInfoPanel'
 
@@ -62,6 +63,7 @@ export default function App() {
       {mode === 'narrative' && <ScrollNarrative />}
       <InteractiveHUD />
       <NodeInfoPanel network={network} />
+      <SourcesPanel />
     </>
   )
 }

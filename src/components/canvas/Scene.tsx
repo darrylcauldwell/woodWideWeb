@@ -1,10 +1,12 @@
 import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { EffectComposer, Bloom } from '@react-three/postprocessing'
-import { SoilLine } from './SoilLine'
+import { SoilVolume } from './SoilVolume'
+import { RootSystem } from './RootSystem'
 import { Aboveground } from './Aboveground'
 import { Underground } from './Underground'
 import { CameraRig } from './CameraRig'
+import { DynamicBackground } from './DynamicBackground'
 import type { ComputedNetwork } from '../../types/network'
 import { useAppStore } from '../../stores/appStore'
 
@@ -15,26 +17,27 @@ interface Props {
 function SceneContent({ network }: Props) {
   return (
     <>
-      <CameraRig />
+      <CameraRig network={network} />
+      <DynamicBackground />
 
       {/* Lighting */}
-      <ambientLight intensity={0.15} />
-      <directionalLight position={[10, 20, 10]} intensity={0.4} color="#FFE8CC" />
-      <pointLight position={[0, -3, 0]} intensity={0.8} color="#FFD700" distance={20} />
+      <ambientLight intensity={0.2} />
+      <directionalLight position={[10, 20, 10]} intensity={0.5} color="#FFE8CC" />
 
       {/* Fog for depth */}
       <fog attach="fog" args={['#0A0806', 15, 55]} />
 
-      <SoilLine />
+      <SoilVolume />
       <Aboveground network={network} />
+      <RootSystem network={network} />
       <Underground network={network} />
 
       {/* Postprocessing */}
       <EffectComposer>
         <Bloom
-          luminanceThreshold={0.3}
-          luminanceSmoothing={0.9}
-          intensity={1.2}
+          luminanceThreshold={0.7}
+          luminanceSmoothing={0.3}
+          intensity={0.6}
           mipmapBlur
         />
       </EffectComposer>
@@ -44,6 +47,7 @@ function SceneContent({ network }: Props) {
 
 export function Scene({ network }: Props) {
   const isMobile = useAppStore((s) => s.isMobile)
+  const setHoveredNodeId = useAppStore((s) => s.setHoveredNodeId)
 
   return (
     <div style={{
@@ -56,6 +60,7 @@ export function Scene({ network }: Props) {
     }}>
       <Canvas
         camera={{ position: [0, 20, 35], fov: 50, near: 0.1, far: 100 }}
+        onPointerMissed={() => setHoveredNodeId(null)}
         gl={{
           antialias: !isMobile,
           toneMapping: 3, // ACESFilmic

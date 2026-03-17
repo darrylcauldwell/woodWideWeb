@@ -1,36 +1,57 @@
 import { AnimatedCounter } from './AnimatedCounter'
+import { CitationMarker } from './CitationMarker'
 
 export function Section2_ScaleIsInsane() {
   return (
     <section style={sectionStyle}>
       <div style={contentStyle}>
-        <h2 style={headingStyle}>The Scale is Insane</h2>
+        <h2 style={headingStyle}>The Network Revealed</h2>
+
+        <p style={{ ...paragraphStyle, marginBottom: '2rem' }}>
+          As the camera descends through the soil, the hidden architecture appears.
+          In this 30×30 metre plot of Douglas fir forest, molecular identification
+          revealed 27 distinct fungal genets connecting 67 trees.
+          <CitationMarker sourceIds={['beiler2010']} />
+        </p>
 
         <div style={statGrid}>
           <div style={statCard}>
-            <AnimatedCounter end={200} suffix=" miles" />
-            <p style={statLabel}>of fungal threads per teaspoon of forest soil</p>
-          </div>
-
-          <div style={statCard}>
-            <AnimatedCounter end={500} suffix="M" prefix="" />
-            <p style={statLabel}>years old — mycorrhizal networks predate roots</p>
-          </div>
-
-          <div style={statCard}>
             <AnimatedCounter end={92} suffix="%" />
-            <p style={statLabel}>of all plant species depend on mycorrhizal fungi</p>
+            <p style={statLabel}>
+              of plant families form mycorrhizal associations
+              <CitationMarker sourceIds={['smith2009', 'brundrett2009']} />
+            </p>
           </div>
 
           <div style={statCard}>
-            <AnimatedCounter end={75} suffix="%" />
-            <p style={statLabel}>of a forest's trees connected through a single network</p>
+            <AnimatedCounter end={400} suffix="M+" />
+            <p style={statLabel}>
+              years old — mycorrhizal symbioses predate roots
+              <CitationMarker sourceIds={['smith2009']} />
+            </p>
+          </div>
+
+          <div style={statCard}>
+            <AnimatedCounter end={47} />
+            <p style={statLabel}>
+              trees connected to the most-connected hub tree in a single plot
+              <CitationMarker sourceIds={['beiler2010']} />
+            </p>
+          </div>
+
+          <div style={statCard}>
+            <AnimatedCounter end={27} />
+            <p style={statLabel}>
+              distinct fungal genets — each a single living organism spanning multiple trees
+              <CitationMarker sourceIds={['beiler2010']} />
+            </p>
           </div>
         </div>
 
         <p style={{ ...paragraphStyle, marginTop: '2rem' }}>
-          If you unravelled the fungal network under a single footstep,
-          it would stretch halfway across your city.
+          Each genet is a genetically unique fungal individual. Some span the
+          entire plot, connecting dozens of trees through a single organism.
+          <CitationMarker sourceIds={['beiler2010', 'beiler2012']} />
         </p>
       </div>
     </section>
@@ -48,10 +69,15 @@ const sectionStyle: React.CSSProperties = {
 const contentStyle: React.CSSProperties = {
   maxWidth: '700px',
   textAlign: 'center',
+  background: 'rgba(10, 8, 6, 0.45)',
+  backdropFilter: 'blur(8px)',
+  borderRadius: '16px',
+  padding: '2.5rem',
+  border: '1px solid rgba(255, 255, 255, 0.04)',
 }
 
 const headingStyle: React.CSSProperties = {
-  fontSize: '2.5rem',
+  fontSize: 'clamp(1.5rem, 5vw, 2.5rem)',
   fontWeight: 300,
   marginBottom: '2rem',
   letterSpacing: '-0.01em',

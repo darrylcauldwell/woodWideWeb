@@ -1,5 +1,9 @@
 import type { NutrientType } from '../utils/colors'
 
+export type TreeCohort = 'veteran' | 'mature' | 'sapling'
+export type EdgeDirection = 'bidirectional' | 'treeToFungus' | 'fungusToTree'
+export type EvidenceConfidence = 'established' | 'demonstrated' | 'contested'
+
 export interface TreeNode {
   id: string
   x: number          // position in plot (meters)
@@ -8,6 +12,7 @@ export interface TreeNode {
   isMotherTree: boolean
   connections: number // degree centrality
   species: string
+  cohort: TreeCohort
 }
 
 export interface FungalGenet {
@@ -15,6 +20,8 @@ export interface FungalGenet {
   species: string
   color: string
   treeIds: string[]
+  depthRange: [number, number] // [min, max] metres below surface
+  extent: number               // genet area in m²
 }
 
 export interface NetworkEdge {
@@ -24,6 +31,8 @@ export interface NetworkEdge {
   fungalGenetId: string
   nutrientType: NutrientType
   weight: number       // relative flow strength 0-1
+  direction: EdgeDirection
+  confidence: EvidenceConfidence
 }
 
 export interface NetworkData {
@@ -34,6 +43,7 @@ export interface NetworkData {
     plotSize: [number, number]  // meters
     source: string
     year: number
+    dataNote: string
   }
 }
 

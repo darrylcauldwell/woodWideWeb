@@ -1,35 +1,40 @@
 import { AnimatedCounter } from './AnimatedCounter'
+import { CitationMarker } from './CitationMarker'
 
 export function Section4_MotherTrees() {
   return (
     <section style={sectionStyle}>
       <div style={contentStyle}>
-        <h2 style={headingStyle}>Mother Trees</h2>
+        <h2 style={headingStyle}>The Hub Trees</h2>
 
         <p style={paragraphStyle}>
-          Not all trees are equal in the network. The oldest, largest trees —
-          <strong style={{ color: '#FFB800' }}> mother trees </strong> —
-          sit at the centre of the web, connected to hundreds of neighbours.
+          The network's connection distribution follows a power law — most trees
+          have few connections, but a handful are massively connected hubs.
+          <CitationMarker sourceIds={['beiler2010']} />{' '}
+          This scale-free topology mirrors the structure of the internet:
+          a few routers carry most of the traffic.
         </p>
 
         <div style={highlight}>
           <AnimatedCounter end={47} />
           <p style={statLabel}>
-            other trees connected to a single mother tree in a 30×30m plot
+            trees connected to the most-connected hub in this 30×30m plot
+            <CitationMarker sourceIds={['beiler2010']} />
           </p>
         </div>
 
         <p style={paragraphStyle}>
-          Mother trees recognise their own seedlings and send them extra carbon
-          through the network — up to <strong>4× more</strong> than to strangers.
-          When a mother tree is dying, she dumps her remaining carbon reserves into
-          the network — a final gift to the forest.
+          These veteran trees — the oldest and largest — are not just
+          well-connected. They sit at critical <em>bridges</em> between
+          clusters, giving them disproportionate influence over resource
+          distribution through the network.
         </p>
 
-        <p style={{ ...paragraphStyle, fontStyle: 'italic', color: '#A09880' }}>
-          "A forest is not a collection of trees. It is a superorganism."
-          <br />
-          <span style={{ fontSize: '0.9rem' }}>— Suzanne Simard</span>
+        <p style={{ ...paragraphStyle, color: '#A09880', fontSize: '1rem' }}>
+          Multiple age cohorts — veterans, mature trees, and saplings — are
+          connected through the same fungal genets, linking generations
+          underground.
+          <CitationMarker sourceIds={['beiler2010', 'beiler2012']} />
         </p>
       </div>
     </section>
@@ -47,10 +52,15 @@ const sectionStyle: React.CSSProperties = {
 const contentStyle: React.CSSProperties = {
   maxWidth: '600px',
   textAlign: 'center',
+  background: 'rgba(10, 8, 6, 0.45)',
+  backdropFilter: 'blur(8px)',
+  borderRadius: '16px',
+  padding: '2.5rem',
+  border: '1px solid rgba(255, 255, 255, 0.04)',
 }
 
 const headingStyle: React.CSSProperties = {
-  fontSize: '2.5rem',
+  fontSize: 'clamp(1.5rem, 5vw, 2.5rem)',
   fontWeight: 300,
   marginBottom: '1.5rem',
 }

@@ -8,21 +8,20 @@ interface Props {
 }
 
 export function NodeInfoPanel({ network }: Props) {
-  const selectedNodeId = useAppStore((s) => s.selectedNodeId)
-  const setSelectedNodeId = useAppStore((s) => s.setSelectedNodeId)
+  const hoveredNodeId = useAppStore((s) => s.hoveredNodeId)
 
   const info = useMemo(() => {
-    if (!selectedNodeId) return null
-    const tree = network.data.trees.find((t) => t.id === selectedNodeId)
+    if (!hoveredNodeId) return null
+    const tree = network.data.trees.find((t) => t.id === hoveredNodeId)
     if (!tree) return null
 
     const connectedEdges = network.data.edges.filter(
-      (e) => e.source === selectedNodeId || e.target === selectedNodeId
+      (e) => e.source === hoveredNodeId || e.target === hoveredNodeId
     )
 
     const connectedTreeIds = new Set(
       connectedEdges.map((e) =>
-        e.source === selectedNodeId ? e.target : e.source
+        e.source === hoveredNodeId ? e.target : e.source
       )
     )
 
@@ -35,18 +34,12 @@ export function NodeInfoPanel({ network }: Props) {
     )
 
     return { tree, connectedTreeIds, connectedEdges, nutrientBreakdown }
-  }, [selectedNodeId, network])
+  }, [hoveredNodeId, network])
 
   if (!info) return null
 
   return (
     <div style={panelStyle}>
-      <button
-        onClick={() => setSelectedNodeId(null)}
-        style={closeButton}
-      >
-        &times;
-      </button>
 
       <h3 style={{ margin: '0 0 0.5rem', fontSize: '1.2rem' }}>
         {info.tree.isMotherTree ? 'Mother Tree' : 'Tree'} {info.tree.id.replace('tree-', '#')}
@@ -104,20 +97,10 @@ const panelStyle: React.CSSProperties = {
   border: '1px solid rgba(255, 255, 255, 0.08)',
   borderRadius: '12px',
   padding: '1.5rem',
-  width: '260px',
+  width: 'min(260px, calc(100vw - 3rem))',
   zIndex: 10,
   color: '#F5F0E8',
-}
-
-const closeButton: React.CSSProperties = {
-  position: 'absolute',
-  top: '0.5rem',
-  right: '0.75rem',
-  background: 'none',
-  border: 'none',
-  color: '#A09880',
-  fontSize: '1.4rem',
-  cursor: 'pointer',
+  pointerEvents: 'none',
 }
 
 const speciesStyle: React.CSSProperties = {

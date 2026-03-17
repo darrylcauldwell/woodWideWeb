@@ -2,7 +2,7 @@
 
 ## What This Is
 
-A scroll-driven 3D visualisation of a real mycorrhizal fungal network. Static SPA — no backend, no database, no API. Built with React 19 + Three.js, served by Caddy in Docker.
+A scroll-driven 3D scientific data story visualising a real mycorrhizal fungal network. Static SPA — no backend, no database, no API. Built with React 19 + Three.js, served by Caddy in Docker.
 
 ## Tech Stack
 
@@ -28,21 +28,48 @@ docker compose down
 | Pattern | Location |
 |---------|----------|
 | 3D scene components | `src/components/canvas/` |
-| Scroll narrative sections | `src/components/overlay/` |
+| Scroll narrative sections (7) | `src/components/overlay/` |
 | Interactive UI panels | `src/components/ui/` |
 | Custom hooks | `src/hooks/` |
 | Zustand store | `src/stores/appStore.ts` |
 | Type definitions | `src/types/network.ts` |
 | Utility functions | `src/utils/` |
+| Scientific sources data | `src/data/sources.ts` |
 | Static dataset | `public/data/network.json` |
 
 ## Architecture Notes
 
-- Two modes: **narrative** (scroll-driven camera) and **interactive** (OrbitControls + HUD)
+- Two modes: **narrative** (scroll-driven camera, 7 sections) and **interactive** (OrbitControls + HUD)
 - Mode state lives in `appStore.ts` — components read from the store, not prop drilling
-- Network data is loaded once via `useNetworkData` hook, layout computed in `graphLayout.ts`
-- Particles are animated in `useNutrientFlow` — 2000 particles on desktop, 400 on mobile
-- The Caddyfile handles SPA routing (`try_files`) and reverse proxies `/grafana` and `/prometheus` to the observability stack
+- Network data loaded once via `useNetworkData` hook, layout computed in `graphLayout.ts`
+- Layout uses genet depthRange for vertical stratification (shallow vs deep fungi)
+- Particles animated in `useNutrientFlow` — directional flow based on nutrient type, modulated by season
+- Fungal genets rendered as organic TubeGeometry in `FungalGenets.tsx` — click to highlight entire organism
+- Defence signal cascades via BFS from clicked tree through network graph
+- Confidence overlay re-colours edges by evidence strength (green/amber/red)
+- Sources panel with 20 real papers, inline citation markers on every quantitative claim
+- The Caddyfile handles SPA routing (`try_files`) and reverse proxies `/grafana` and `/prometheus`
+
+## Visual Layers
+
+1. **Forest Canopy** — instanced trees with DBH-based allometry
+2. **Soil Volume** — translucent horizon layers (O/A/B horizons)
+3. **Root Systems** — bezier curves from trunk base to underground nodes
+4. **Fungal Genets** — organic tube geometry per genet, coloured by species
+5. **Network Edges** — line segments with nutrient/confidence colouring
+6. **Nutrient Particles** — directional flow, seasonal modulation
+7. **Defence Signal** — BFS cascade pulse animation
+8. **Confidence Overlay** — evidence-based edge colouring toggle
+
+## Interactive Controls
+
+- Season dial (spring/summer/autumn/winter) — shifts nutrient flow direction
+- Nutrient type toggles (carbon/phosphorus/nitrogen/water)
+- Particle speed slider
+- Genet highlight mode — click a genet to see its full extent
+- Confidence overlay toggle — green (established) / amber (demonstrated) / red (contested)
+- Defence signal — Shift+click any tree
+- Sources button — opens full reference panel
 
 ## Docker
 
@@ -54,4 +81,8 @@ docker compose down
 
 ## Dataset
 
-Based on Beiler et al. (2010/2015). 67 trees, 27 Rhizopogon fungal genets, 220 edges in a 30x30m Douglas fir plot.
+Based on Beiler et al. (2010/2015). 67 Douglas fir trees, 27 fungal genets, 220 edges in a 30×30m plot. Enhanced with:
+- `cohort` per tree (veteran/mature/sapling)
+- `depthRange` and `extent` per genet
+- `direction` and `confidence` per edge
+- Full data provenance note in metadata
